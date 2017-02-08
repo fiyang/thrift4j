@@ -75,6 +75,7 @@ public class ProxyBeanFactory implements BeanPostProcessor {
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName)
       throws BeansException {
+	  
     Class clazz = bean.getClass();
     do {
       for (Field field : clazz.getDeclaredFields()) {
