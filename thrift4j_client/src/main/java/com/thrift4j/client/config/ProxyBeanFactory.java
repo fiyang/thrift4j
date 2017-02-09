@@ -5,6 +5,7 @@ package com.thrift4j.client.config;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.pool2.KeyedPooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPool;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -65,8 +66,10 @@ public class ProxyBeanFactory implements BeanPostProcessor {
   @Autowired
   private DefaultListableBeanFactory beanFactory;
 
+ //private KeyedPooledObjectFactory<Node,TTransport> keyPooledObjectFactory = new KeyedPooledObjectFactory<Node,TTransport>();
+  
   @Autowired
-  private GenericKeyedObjectPool<Node, TTransport> pool;
+  private GenericKeyedObjectPool<Node, TTransport> pool = new GenericKeyedObjectPool(null, null);
 
   @Autowired
   private EtcdClient etcdClient;
