@@ -69,7 +69,7 @@ public class ProxyBeanFactory implements BeanPostProcessor {
  //private KeyedPooledObjectFactory<Node,TTransport> keyPooledObjectFactory = new KeyedPooledObjectFactory<Node,TTransport>();
   
   @Autowired
-  private GenericKeyedObjectPool<Node, TTransport> pool = new GenericKeyedObjectPool(null, null);
+  private GenericKeyedObjectPool<Node, TTransport> thriftClientsPool;
 
   @Autowired
   private EtcdClient etcdClient;
@@ -230,7 +230,7 @@ public class ProxyBeanFactory implements BeanPostProcessor {
           }
 
           node.setTimeout(thriftClientBean.getTimeout());
-          transport = pool.borrowObject(node);
+          transport = thriftClientsPool.borrowObject(node);
 
           TProtocol protocol = new TBinaryProtocol(transport, true, true);
           Object client = thriftClientBean.getClientConstructor().newInstance(protocol);
@@ -251,7 +251,7 @@ public class ProxyBeanFactory implements BeanPostProcessor {
                   ExceptionUtils.getMessage(e) + ", bean name is " + beanName, e);
             } else if (realException == null) {
               if (innerException.getType() == TTransportException.END_OF_FILE) {
-                pool.clear(node);// 把以前的对象池进行销毁
+            	  thriftClientsPool.clear(node);// 把以前的对象池进行销毁
                 if (transport != null) {
                   transport.close();
                 }
@@ -262,7 +262,7 @@ public class ProxyBeanFactory implements BeanPostProcessor {
                 continue;
               }
             } else if (realException instanceof SocketException) {
-              pool.clear(node);// 把以前的对象池进行销毁
+            	thriftClientsPool.clear(node);// 把以前的对象池进行销毁
               if (transport != null) {
                 transport.close();
               }
@@ -291,8 +291,8 @@ public class ProxyBeanFactory implements BeanPostProcessor {
           }
         } finally {
           try {
-            if (pool != null && transport != null) {
-              pool.returnObject(node, transport);
+            if (thriftClientsPool != null && transport != null) {
+            	thriftClientsPool.returnObject(node, transport);
             }
           } catch (Exception e) {
           }

@@ -6,23 +6,18 @@ package com.thrift4j.client.config;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPool;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 import org.apache.thrift.transport.TTransport;
-//import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-//import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.thrift4j.client.connection.TransportPoolFactory;
 import com.thrift4j.client.route.Node;
 
-/**
- * Created by dragon on 16/5/6.
- */
+
 @Configuration
-//@EnableConfigurationProperties(ThriftClientProperties.class)
 public class ThriftClientConfiguration {
 
 
   @Bean(destroyMethod = "close")
-  //@ConditionalOnMissingBean
   public GenericKeyedObjectPool<Node, TTransport> thriftClientsPool(ThriftClientProperties thriftClientProperties) {
     GenericKeyedObjectPoolConfig config = new GenericKeyedObjectPoolConfig();
     config.setJmxEnabled(false); //cause spring will autodetect itself

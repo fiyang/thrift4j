@@ -1,4 +1,4 @@
-package com.thrift4j.client.config;
+package com.thrift4j.client.connection;
 
 
 

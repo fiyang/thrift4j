@@ -5,6 +5,8 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import com.netflix.loadbalancer.ServerListUpdater;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -16,9 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import mousio.etcd4j.EtcdClient;
 import mousio.etcd4j.promises.EtcdResponsePromise;
 
-/**
- * Created by dragon on 16/6/7.
- */
+@Slf4j
 public class EtcdNotificationUpdate implements ServerListUpdater {
 
   private static class LazyHolder {
@@ -68,9 +68,8 @@ public class EtcdNotificationUpdate implements ServerListUpdater {
     if (isActive.compareAndSet(false, true)) {
       try {
         EtcdResponsePromise responsePromise = etcdClient.get(listenPath).recursive().waitForChange().send();
-        
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("start fail not foun valid listenPath {}",e);
       }
     }
   }
