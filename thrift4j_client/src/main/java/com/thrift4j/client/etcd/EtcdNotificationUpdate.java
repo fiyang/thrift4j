@@ -4,6 +4,9 @@ package com.thrift4j.client.etcd;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import com.netflix.loadbalancer.ServerListUpdater;
+import com.thrift4j.etcd.watcher.EtcdListener;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Date;
@@ -15,8 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import mousio.etcd4j.EtcdClient;
 import mousio.etcd4j.promises.EtcdResponsePromise;
+import mousio.etcd4j.responses.EtcdKeysResponse;
 
-
+@Slf4j
 public class EtcdNotificationUpdate implements ServerListUpdater {
 
   private static class LazyHolder {
@@ -32,6 +36,7 @@ public class EtcdNotificationUpdate implements ServerListUpdater {
           DEFAULT_SERVER_LIST_UPDATE_EXECUTOR.shutdown();
           Runtime.getRuntime().removeShutdownHook(SHUTDOWN_THREAD);
         } catch (Exception e) {
+        	log.error("EtcdNotificationUpdate.shutdown_thread.run", e);
         }
       }
     });
@@ -65,7 +70,7 @@ public class EtcdNotificationUpdate implements ServerListUpdater {
   public void start(UpdateAction updateAction) {
     if (isActive.compareAndSet(false, true)) {
       try {
-        EtcdResponsePromise responsePromise = etcdClient.get(listenPath).recursive().waitForChange().send();
+        EtcdResponsePromise<EtcdKeysResponse> responsePromise = etcdClient.get(listenPath).recursive().waitForChange().send();
         responsePromise.addListener(new EtcdListener(etcdClient, listenPath) {
 
           @Override
@@ -75,12 +80,13 @@ public class EtcdNotificationUpdate implements ServerListUpdater {
                 updateAction.doUpdate();
                 lastUpdated.set(System.currentTimeMillis());
               } catch (Exception e) {
+            	  log.error("EtcdNotificationUpdate.start.changeEvent", e);
               }
             });
           }
         });
       } catch (IOException e) {
-        e.printStackTrace();
+    	  log.error("EtcdNotificationUpdate.start.outer", e);
       }
     }
   }

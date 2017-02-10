@@ -48,7 +48,7 @@ public class ThriftServerList extends AbstractServerList<ThriftServer> {
     }
 
     try {
-      EtcdKeysResponse response = etcd.getDir("/dragon/service/" + serviceId).send().get();
+      EtcdKeysResponse response = etcd.getDir("/thrift4j/service/" + serviceId).send().get();
 
       if (response.node.nodes == null || response.node.nodes.isEmpty()) {
         log.warn("response node is empty, url is [ ]");
