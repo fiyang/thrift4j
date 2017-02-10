@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+	">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.thrift4j.*">
+	</context:component-scan>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+           <list>  
+              <!-- 这里支持多种寻址方式：classpath和file -->  
+              <value>classpath:/META-INF/spring/etcd.properties</value>
+            </list>  
+        </property>  
+    </bean>  
+	<bean id="etcdRegister" class="com.thrift4j.etcd.register.EtcdRegister">
+	</bean>
+	
+	<bean id="etcdClientProperties" class="com.thrift4j.etcd.configure.EtcdClientProperties">
+		<property name="uris">
+            <list>
+                <value>http://10.0.3.77:2379</value>
+            </list>
+        </property>
+	</bean>
+</beans>
