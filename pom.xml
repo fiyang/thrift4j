@@ -7,6 +7,8 @@
   
   <modules>
 		<module>thrift4j_client</module>
+		<module>thrift4j_etcd</module>
+		<module>thrift4j_server</module>
 	</modules>
 
 	<properties>
