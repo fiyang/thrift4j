@@ -31,20 +31,20 @@ import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
-//@EnableConfigurationProperties({ThriftServerProperties.class})
 @Slf4j
 public class ThriftAutoConfiguration implements ApplicationContextAware {
-
+	/*
   @Autowired
   private ThriftServerProperties thriftServerProperties;
-
+**/	
   private ApplicationContext applicationContext;
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     this.applicationContext = applicationContext;
   }
-
+  
+  /*
   private TProtocolFactory thriftProtocolFactory() {
     return new TBinaryProtocol.Factory(true, true);
   }
@@ -67,6 +67,7 @@ public class ThriftAutoConfiguration implements ApplicationContextAware {
   private TProcessor thriftProcessor()
       throws ClassNotFoundException, InstantiationException, NoSuchMethodException, IllegalAccessException {
     String[] beanNames = applicationContext.getBeanNamesForAnnotation(ThriftService.class);
+    
     if (beanNames != null) {
       Object bean = applicationContext.getBean(beanNames[0]);
 
@@ -110,7 +111,6 @@ public class ThriftAutoConfiguration implements ApplicationContextAware {
         log.error("iface class is null");
         throw new IllegalStateException("No Thrift Ifaces found on handler");
       }
-
       Constructor<TProcessor> processorConstructor = processorClass.getConstructor(ifaceClass);
       TProcessor processor = BeanUtils.instantiateClass(processorConstructor, bean);
 
@@ -188,5 +188,6 @@ public class ThriftAutoConfiguration implements ApplicationContextAware {
         thriftServerProperties.getServiceName(), thriftServerProperties.getPort());
     return new THsHaServer(args);
   }
+  */
 
 }

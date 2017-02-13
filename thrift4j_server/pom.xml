@@ -12,12 +12,16 @@
             <artifactId>etcd4j</artifactId>
             <version>${etcd4j.version}</version>
         </dependency>
-        
         	<dependency>
             <groupId>com.thrift4j</groupId>
             <artifactId>thrift4j_etcd</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+			<groupId>org.apache.thrift</groupId>
+			<artifactId>libfb303</artifactId>
+			<version>${thrift.libfb303.version}</version>
+		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

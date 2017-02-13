@@ -1,7 +1,6 @@
 package com.thrift4j.server.bootstrap;
 
-import org.apache.thrift.server.TServer;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.SmartLifecycle;
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BootStrap implements SmartLifecycle{
 	
-	 @Autowired
-	  private TServer server;
+	  private NBServer server;
 
 	  private int phase = Integer.MAX_VALUE;
 
@@ -23,8 +21,7 @@ public class BootStrap implements SmartLifecycle{
 	  public void stop(Runnable runnable) {
 	    if (isRunning()) {
 	      log.info("thrift server shutdown");
-	      //server.setShouldStop(true);
-	      server.stop();
+	      server.stopServer();
 	      if (runnable != null) {
 	        runnable.run();
 	      }
@@ -36,9 +33,9 @@ public class BootStrap implements SmartLifecycle{
 	    if (server == null) {
 	      return;
 	    }
-	    ThriftServer thriftServer = new ThriftServer(server);
-	    Thread runnerThread = new Thread(thriftServer, "thrift server");
-	    runnerThread.start();
+	    
+	    
+	    
 	  }
 
 
@@ -60,23 +57,6 @@ public class BootStrap implements SmartLifecycle{
 	    return this.phase;
 	  }
 
-	  class ThriftServer implements Runnable {
-
-	    private TServer server;
-
-	    ThriftServer(TServer server) {
-	      this.server = server;
-	    }
-
-	    @Override
-	    public void run() {
-	      if (server != null) {
-	        log.info("thrift server started");
-	        this.server.serve();
-	      }
-	    }
-	  }
-	
 	public static void main(String [] args){
 		
 	}
