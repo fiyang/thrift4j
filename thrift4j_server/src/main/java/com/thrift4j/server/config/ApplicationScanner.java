@@ -2,7 +2,6 @@ package com.thrift4j.server.config;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.thrift.TProcessor;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +26,7 @@ public class ApplicationScanner implements ApplicationContextAware {
 		try{
 			//利用反射查找 
 			ArrayList<ServiceProviderConfig> serviceAllList = scan();
+			//存入全局上下文
 			GlobalContext.getInstance().setProviderList(serviceAllList);
 		}catch(Exception e){
 			log.error("application init fail ",e);

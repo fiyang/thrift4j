@@ -1,6 +1,9 @@
 package com.thrift4j.server.config;
 
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
 import lombok.Data;
 
 /**
@@ -9,6 +12,7 @@ import lombok.Data;
 @Data
 public class ThriftServerProperties {
   //服务使用的端口
+  @Value("${port}")
   private int port;
 
   //服务进程的工作队列最小值
@@ -18,7 +22,7 @@ public class ThriftServerProperties {
   private int maxWorker = Runtime.getRuntime().availableProcessors();
 
   private int workerQueueCapacity = 1024;
-
+  @Value("${serviceName}")
   private String serviceName;
 
 }

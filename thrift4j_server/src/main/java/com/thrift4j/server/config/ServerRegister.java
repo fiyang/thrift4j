@@ -20,7 +20,7 @@ import mousio.etcd4j.EtcdClient;
 @Configuration
 @Import(EtcdAutoConfiguration.class)
 @Slf4j
-public class ThriftRegisterConfiguration {
+public class ServerRegister {
 
   private final Pattern DEFAULT_PACKAGE_PATTERN = Pattern.compile(
       "(\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*\\.)*\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*");
@@ -30,14 +30,15 @@ public class ThriftRegisterConfiguration {
       ThriftServerProperties thriftServerProperties) {
     EtcdRegister register = new EtcdRegister();
     String serviceName = thriftServerProperties.getServiceName();
-
+    
+    /*
     int lastComma = serviceName.lastIndexOf(".");
     String interfaceName = serviceName.substring(0, lastComma);
     if (!DEFAULT_PACKAGE_PATTERN.matcher(interfaceName).matches()) {
       throw new ThriftServerException("interface name is not match to package pattern");
     }
-
-    register.setPath("/thrift4j/service/" + interfaceName);
+	*/
+    register.setPath("/thrift4j/service/" + serviceName);
 
     String ip = InetAddressUtil.getLocalHostLANAddress().getHostAddress();
 

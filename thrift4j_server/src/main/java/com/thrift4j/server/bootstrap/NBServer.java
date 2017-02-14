@@ -3,11 +3,8 @@ package com.thrift4j.server.bootstrap;
 import java.util.ArrayList;
 
 import org.apache.thrift.TMultiplexedProcessor;
-import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.server.TNonblockingServer;
-import org.apache.thrift.server.TNonblockingServer.Args;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TFastFramedTransport;

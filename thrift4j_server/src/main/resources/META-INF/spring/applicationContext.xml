@@ -21,12 +21,12 @@
         <property name="locations">  
            <list>  
               <!-- 这里支持多种寻址方式：classpath和file -->  
-              <value>classpath:/META-INF/spring/etcd.properties</value>
+              <value>classpath:/META-INF/spring/*.properties</value>
             </list>  
         </property>  
     </bean>
    
-	<bean id="etcdRegister" class="com.thrift4j.etcd.register.EtcdRegister">
+	 <bean id="thriftServerProperties" class="com.thrift4j.server.config.ThriftServerProperties">
 	</bean>
 	
 	<bean id="etcdClientProperties" class="com.thrift4j.etcd.configure.EtcdClientProperties">
@@ -36,4 +36,9 @@
             </list>
         </property>
 	</bean>
+ <!-- 
+	<bean id="serverRegisterClient" class="com.thrift4j.server.config.serverRegisterClient">
+	</bean>
+	 -->
+	
 </beans>

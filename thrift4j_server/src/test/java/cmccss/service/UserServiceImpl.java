@@ -10,9 +10,11 @@ import com.thrift4j.server.annotation.ThriftService;
 
 import cmccss.contract.User;
 import cmccss.contract.UsesrService;
+import lombok.extern.slf4j.Slf4j;
 
 @ThriftService
 @Component
+@Slf4j
 public class UserServiceImpl implements UsesrService.Iface{
 
 	@Override
@@ -94,7 +96,10 @@ public class UserServiceImpl implements UsesrService.Iface{
 
 	@Override
 	public User recommend(User request) throws TException {
-		return null;
+		request.setName("ok");
+		request.setPwd("pwd");
+		log.info("request ok ,wile return");
+		return request;
 	}
 
 }

@@ -15,6 +15,7 @@ import mousio.etcd4j.responses.EtcdKeysResponse;
 public class EtcdClientRetryTest extends TestCase{
 	public void testRetryClient() throws IOException, EtcdException, EtcdAuthenticationException, TimeoutException{
 		EtcdClient etcd = new EtcdClient(URI.create("http://127.0.0.1:2379"));
+		etcd.getDir("foo").send().get();
 		//System.out.println(etcd.getVersion());
 		
 		//EtcdKeyGetRequest request = etcd.get("mykeys");
@@ -29,6 +30,8 @@ public class EtcdClientRetryTest extends TestCase{
 		*/
 		etcd.setRetryHandler(new RetryNTimes(10,2));
 		EtcdKeysResponse response = etcd.put("foo", "bar").send().get();
+		
+		//EtcdKeysResponse responsev2 = etcd.putDir("foo").send().l
 		System.out.println(response.getNode().getValue());
 	}
 }
