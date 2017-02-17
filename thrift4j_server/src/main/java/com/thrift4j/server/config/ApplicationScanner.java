@@ -24,6 +24,7 @@ public class ApplicationScanner implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 		try{
+			log.info("set appcontext ok");
 			//利用反射查找 
 			ArrayList<ServiceProviderConfig> serviceAllList = scan();
 			//存入全局上下文
@@ -49,10 +50,11 @@ public class ApplicationScanner implements ApplicationContextAware {
 
 	public ServiceProviderConfig getConfigByName(String className) throws NoSuchMethodException, SecurityException{
 		Object bean = applicationContext.getBean(className);
-	      Class<?> serviceClass;
+	      Class<?> serviceClass = null;
 	      Class<TProcessor> processorClass = null;
 	      Class<?> ifaceClass = null;
 	      Class<?>[] handlerInterfaces = ClassUtils.getAllInterfaces(bean);
+	      
 	      for (Class<?> interfaceClass : handlerInterfaces) {
 	        if (!interfaceClass.getName().endsWith("$Iface")) {
 	          continue;
@@ -84,7 +86,14 @@ public class ApplicationScanner implements ApplicationContextAware {
 	      TProcessor processor = BeanUtils.instantiateClass(processorConstructor, bean);
 	      ServiceProviderConfig config = new ServiceProviderConfig();
 	      config.setProcessor(processor);
-	      config.setName(ifaceClass.getCanonicalName());
+	      if(null != serviceClass){
+	    	  config.setName(serviceClass.getCanonicalName());
+	      }else{
+	    	  String name = ifaceClass.getCanonicalName();
+	    	  int index = name.indexOf("$Iface");
+	    	  name = name.substring(0, index);
+	    	  config.setName(name);
+	      }
 	      return config;
 	}
 }

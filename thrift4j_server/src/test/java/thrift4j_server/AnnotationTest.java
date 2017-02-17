@@ -14,10 +14,27 @@ import junit.framework.TestCase;
 public class AnnotationTest extends TestCase{
 	
 	
-	public static final String DEFAULT_SPRING_CONFIG = "classpath*:META-INF/spring/*.xml";
+	public static final String DEFAULT_SPRING_CONFIG = "/opt/apps/app/servertest/applicationContext.xml";
 
 	static ClassPathXmlApplicationContext context;
 	
+	public static void main(String [] args) throws Exception{
+		context = new ClassPathXmlApplicationContext(DEFAULT_SPRING_CONFIG);
+		//EtcdClientProperties client = (EtcdClientProperties) context.getBean("etcdClientProperties");
+		//assertNotNull(client);
+		EtcdRegister register = (EtcdRegister)context.getBean("etcdRegister");
+		System.out.println(register.getKey());
+		System.out.println(register.getPath());
+		System.out.println(register.getValue());
+		
+		NBServer nbServer = new NBServer(GlobalContext.getInstance().getProviderList(), 8091);
+		nbServer.startServer();
+		
+		//context.getBean("userServiceImpl");
+		CountDownLatch latch = new CountDownLatch(1);
+		//System.out.println("ok master thread begin to wait");
+		latch.await();
+	}
 	
 	public void testAnnotation() throws Exception{
 		context = new ClassPathXmlApplicationContext(DEFAULT_SPRING_CONFIG);

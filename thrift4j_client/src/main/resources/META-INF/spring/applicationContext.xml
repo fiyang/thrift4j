@@ -13,10 +13,28 @@
 	">
 
 	<context:annotation-config />
-	<context:component-scan base-package="com.thrift4j.client.*">
+	<context:component-scan base-package="com.thrift4j.*,cmccss.*">
 	</context:component-scan>
 	<bean id="thriftClientProperties" class="com.thrift4j.client.config.ThriftClientProperties"></bean>
-	<bean id="etcdClientProperties" class="com.thrift4j.client.etcd.EtcdClientProperties"></bean>
+	<!-- <bean id="etcdClientProperties" class="com.thrift4j.etcd.configure.EtcdClientProperties"></bean>-->
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+           <list>  
+              <!-- 这里支持多种寻址方式：classpath和file -->  
+              <value>classpath:/META-INF/spring/*.properties</value>
+            </list>  
+        </property>  
+    </bean>
+	
+	<bean id="etcdClientProperties" class="com.thrift4j.etcd.configure.EtcdClientProperties">
+		<property name="uris">
+            <list>
+                <value>http://127.0.0.1:2379</value>
+            </list>
+        </property>
+	</bean>
+	
 	<!-- 
 	<bean id="poolConfig" class="org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig">
 		<property name="maxIdel" value="100"></property>

@@ -21,7 +21,7 @@
         <property name="locations">  
            <list>  
               <!-- 这里支持多种寻址方式：classpath和file -->  
-              <value>classpath:/META-INF/spring/*.properties</value>
+              <value>classpath:META-INF/spring/*.properties</value>
             </list>  
         </property>  
     </bean>
